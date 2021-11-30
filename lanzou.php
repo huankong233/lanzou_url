@@ -12,13 +12,25 @@ error_reporting(0);
 $url = $_REQUEST['url'];
 $pwd = $_REQUEST['pwd'];
 $type = $_REQUEST['type'];
+$GLOBALS['right'] = '';
+const lanzous = ['lanzoui', 'lanzoux'];
+function getURL($key,$id){
+    $d = 'https://www.'.lanzous[$key].'.com/tp/' . $id;
+    $lanzou = curl($d);
+    if (empty($lanzou) || $lanzou == false){
+        getURL(1,$id);
+    }else{
+        $GLOBALS['right'] = lanzous[$key];
+        return $lanzou;
+    }
+}
+
 if (!empty($url)) {
     $b = 'com/';
     $c = '/';
     $id = GetBetween($url, $b, $c);
-    $d = 'https://www.lanzoui.com/tp/' . $id;
-    $lanzou = curl($d);
-    if (strpos($lanzou, '文件取消分享了') || empty($lanzou)) {
+    $lanzou = getURL(0,$id);
+    if (strpos($lanzou, '文件取消分享了')) {
         $Json = array(
             'code' => 201,
             'msg' => '文件取消分享了',
@@ -27,6 +39,11 @@ if (!empty($url)) {
         $Json = array(
             'code' => 201,
             'msg' => '文件不存在，或已删除',
+        );
+    }else if(strpos($lanzou, '访问地址错误，请核查')){
+        $Json = array(
+            'code' => 201,
+            'msg' => '访问地址错误，请核查',
         );
     } else {
         if (strpos($lanzou, '输入密码') && empty($pwd)) {
@@ -47,7 +64,7 @@ if (!empty($url)) {
             if (!empty($pwd)) {
                 preg_match('/sign\':\'(.*?)\'/', $lanzou, $sign);
                 $post_data = array('action' => 'downprocess', 'sign' => $sign[1], 'p' => $pwd);
-                $pwdurl = send_post('https://wwa.lanzous.com/ajaxm.php', $post_data);
+                $pwdurl = send_post('https://wwa.'.$GLOBALS['right'].'.com/ajaxm.php', $post_data);
                 $obj = json_decode($pwdurl, true);
                 $download = getRedirect($obj['dom'] . '/file/' . $obj['url']);
             }
@@ -79,6 +96,7 @@ if (!empty($url)) {
 if ($type == 'down') {
     header("Location:{$download}");
 }
+
 if (!empty($Json)) {
     echo json_encode($Json, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
@@ -87,7 +105,7 @@ function send_post($url, $post_data)
     $postdata = http_build_query($post_data);
     $options = array('http' => array(
         'method' => 'POST',
-        'header' => 'Referer: https://www.lanzous.com/\\r\\n' . 'Accept-Language:zh-CN,zh;q=0.9\\r\\n',
+        'header' => 'Referer: https://www.'.$GLOBALS['right'].'.com/\\r\\n' . 'Accept-Language:zh-CN,zh;q=0.9\\r\\n',
         'content' => $postdata,
         'timeout' => 15 * 60,
     ));
