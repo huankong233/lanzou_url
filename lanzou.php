@@ -23,6 +23,11 @@ if (!empty($url)) {
             'code' => 201,
             'msg' => '文件取消分享了',
         );
+    }else if (strpos($lanzou, '文件不存在')){
+        $Json = array(
+            'code' => 201,
+            'msg' => '文件不存在，或已删除',
+        );
     } else {
         if (strpos($lanzou, '输入密码') && empty($pwd)) {
             $Json = array('code' => 202, 'msg' => '请输入密码');
