@@ -1,10 +1,11 @@
 <?php
 /**
  * 蓝奏直链解析
- * type接受参数: url|download
+ * type接受参数: download
  * url接受参数: 需要解析的链接
  * pwd接受参数: 需要解析的链接的密码
  */
+
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json');
 error_reporting(0);
@@ -19,8 +20,8 @@ if (!empty($url)) {
     $lanzou = curl($d);
     if (strpos($lanzou, '文件取消分享了') || empty($lanzou)) {
         $Json = array(
-            "code" => 201,
-            "msg" => '文件取消分享了',
+            'code' => 201,
+            'msg' => '文件取消分享了',
         );
     } else {
         if (strpos($lanzou, '输入密码') && empty($pwd)) {
@@ -46,23 +47,19 @@ if (!empty($url)) {
                 $download = getRedirect($obj['dom'] . '/file/' . $obj['url']);
             }
             $Json = array(
-                "code" => 200,
-                "data" => array(
-                    "name" => $name[1],
-                    "author" => $author[1],
-                    "time" => $time[1],
-                    "size" => $size[2],
-                    "url" => $download
+                'code' => 200,
+                'data' => array(
+                    'name' => $name[1],
+                    'author' => $author[1],
+                    'time' => $time[1],
+                    'size' => $size[2],
+                    'url' => $download
                 )
             );
-            if ($type == 'url') {
-                echo $download;
-                die();
-            }
             if (strpos($pwdurl, '"zt":0') !== false) {
                 $Json = array(
-                    "code" => 202,
-                    "msg" => '密码不正确',
+                    'code' => 202,
+                    'msg' => '密码不正确',
                 );
             }
         }
@@ -73,6 +70,7 @@ if (!empty($url)) {
         'msg' => '请输入需要解析的蓝奏链接'
     );
 }
+
 if ($type == 'down') {
     header("Location:{$download}");
 }
@@ -95,13 +93,13 @@ function send_post($url, $post_data)
 
 function curl($url)
 {
-    $header[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-    $header[] = "Accept-Encoding: gzip, deflate, sdch, br";
-    $header[] = "Accept-Language: zh-CN,zh;q=0.8";
+    $header[] = 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
+    $header[] = 'Accept-Encoding: gzip, deflate, sdch, br';
+    $header[] = 'Accept-Language: zh-CN,zh;q=0.8';
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25");
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -145,5 +143,5 @@ function getRedirect($url, $ref = '')
     $data = curl_exec($curl);
     $url = curl_getinfo($curl);
     curl_close($curl);
-    return $url["redirect_url"];
+    return $url['redirect_url'];
 }
