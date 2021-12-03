@@ -4,7 +4,6 @@
 ### 使用方法
 - url:蓝奏云外链链接
 - pwd:外链密码
-- type:仅接受参数download
 <!--more-->
 
 ### 支持链接
@@ -13,23 +12,21 @@
 - \*.lanzoux.com
 
 ### 请求示例
-无密码 https://api.huankong.top/lanzou/?url=https://www.lanzous.com/i8fclgh
+<p>无密码 <a href="https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e">https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e</a></p>
+<p>有密码 <a href="https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e&pwd=d17u">https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e&pwd=d17u</a></p>
 
-有密码 https://api.huankong.top/lanzou/?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u
-
-直接下载  https://api.huankong.top/lanzou/?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u&type=down
 
 ### 返回数据
 ~~~ json
 {
-  "code": 200,
-  "data": {
-    "name": "智云影音V3.7.3.3清爽特别版.apk ",
-    "author": "智云** ",
-    "time": "2020-01-03 ",
-    "size": " 7.9 M ",
-    "url": "https://developer78.baidupan.com/082015bb/2020/01/03/9bb45993f98d785a0775754236a8a451.apk?st=CGGAhiMMwQ2Yqzzww1YO7Q&e=1597909079&b=VOAKkwmzVbRYtwPEVuNT6gPnDLkGmAC1VVBfYVx1VmMEeFppV3kCNAKxB_blQhQfkUYwB4FawUN8C6A3lAo1W_a1ThCoMJgVV_bWGwDJVZt&fi=15880697&pid=13-70-23-99&up="
-  }
+    "code": 200,
+    "data": {
+        "name": "msyh.ttf ",
+        "author": "15** ",
+        "time": "12 天前 ",
+        "size": " 14.4 M ",
+        "url": "https://dev46.baidupan.com/120322bb/2021/11/21/1adb9e3cd76cd776a428280349147aef.ttf?st=fNgkfh4hZSYhhtepVDYS6w&e=1638542112&b=CDcOfQJ7UD1WLQclACQEZg_c_c&fi=56698784&pid=165-154-75-88&up=2&mp=0"
+    }
 }
 ~~~
 
