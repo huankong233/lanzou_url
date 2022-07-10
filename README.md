@@ -7,11 +7,6 @@
 - pwd:外链密码
 <!--more-->
 
-### 支持链接
-- \*.lanzous.com
-- \*.lanzoui.com
-- \*.lanzoux.com
-
 ### 请求示例
 <p>无密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e</a></p>
 <p>有密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pwd=994i">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pwd=994i</a></p>
