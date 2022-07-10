@@ -13,8 +13,9 @@
 - \*.lanzoux.com
 
 ### 请求示例
-<p>无密码 <a href="https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e">https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e</a></p>
-<p>有密码 <a href="https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e&pwd=d17u">https://api.huankong.top/lanzou/?url=https://wwx.lanzoux.com/ikMixwq817e&pwd=d17u</a></p>
+<p>无密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e</a></p>
+<p>有密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pwd=994i">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pwd=994i</a></p>
+<p>文件夹 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/b0e9c6qwf&pass=gto6">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/b0e9c6qwf&pass=gto6</a></p>
 
 
 ### 返回数据
