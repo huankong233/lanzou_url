@@ -8,7 +8,7 @@ $url = $_REQUEST['url'];
 $pass = $_REQUEST['pass'];
 $type = $_REQUEST['type'];
 //接口
-const urls = ['https://wwwx.lanzoux.com', 'https://www.lanzoui.com', 'https://www.lanzouw.com'];
+const urls = ['https://wwwx.lanzouj.com','https://wwwx.lanzoux.com', 'https://www.lanzoui.com', 'https://www.lanzouw.com'];
 
 //开始处理
 if (!empty($url)){

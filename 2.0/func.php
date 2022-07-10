@@ -119,9 +119,9 @@ function fileInfo($info): array
     preg_match("/<div class=\"md\">(.*?)<span class=\"mtt\">/", $info, $name);
     preg_match('/时间:<\\/span>(.*?)<span class="mt2">/', $info, $time);
     preg_match('/发布者:<\\/span>(.*?)<span class="mt2">/', $info, $author);
-    preg_match('/var domianload = \'(.*?)\';/', $info, $down1);
-    preg_match('/domianload \+ \'(.*?)\'/', $info, $down2);
-    preg_match('/var downloads = \'(.*?)\'/', $info, $down3);
+    preg_match('/var pototo = \'(.*?)\';/', $info, $down1);
+    preg_match('/pototo \+ \'(.*?)\'/', $info, $down2);
+    preg_match('/var spototo = \'(.*?)\'/', $info, $down3);
     preg_match('/<div class="md">(.*?)<span class="mtt">\\((.*?)\\)<\\/span><\\/div>/', $info, $size);
     if (!empty($down2)) {
         $download = getRedirect($down1[1] . $down2[1]);
@@ -212,8 +212,9 @@ function send_post($url, $post_data)
 function info_prepare($lanzou, $pwd)
 {
     //获取sign值
-    preg_match('/sign\':\'(.*?)\'/', $lanzou, $sign);
-    //如是获取失败
+    preg_match('/var posign = \'(.*?)\';/', $lanzou, $sign);
+
+    //如是获取失败,则为多文件
     if (empty($sign)) {
         //第一个校验参数名:
         $t = '\'t\':';
