@@ -2,7 +2,7 @@
 require_once "./func.php";
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json;charset=utf-8');
-// error_reporting(0);
+error_reporting(0);
 //获取所需的参数
 $url = @$_REQUEST['url'];
 $pass = @$_REQUEST['pass'];
