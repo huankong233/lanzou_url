@@ -10,6 +10,8 @@
 <p>无密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e</a></p>
 <p>有密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pass=994i">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pass=994i</a></p>
 <p>文件夹 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0e9c4bsj&pass=1omo">https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0e9c4bsj&pass=1omo</a></p>
+注意!!!
+文件夹内文件数超过50会无法显示，因为需要翻页，翻页我折腾一下午没弄出来，就砍掉了()
 
 
 ### 返回数据
