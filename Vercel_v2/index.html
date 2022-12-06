@@ -101,7 +101,7 @@ function get(){
       fetch (channel+"?url="+document.getElementById('lanzou').value+"&pass="+document.getElementById('pwd').value).then(function(response){
         //打印返回的json数据
         response.json().then(function(data){
-            document.getElementById("fin").innerHTML = data.url
+            document.getElementById("fin").innerHTML = data.data.url
         })
     }).catch(function(e){
         console.log('error: ' + e.toString());
