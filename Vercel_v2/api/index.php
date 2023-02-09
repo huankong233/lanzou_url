@@ -197,8 +197,10 @@ function send_post($url, $post_data)
 //信息校验准备
 function info_prepare($lanzou, $pwd)
 {
+    //获取sign变量对应名称
+    preg_match('/\'sign\':(.*?),/', $content, $var);
     //获取sign值
-    preg_match('/var posign = \'(.*?)\';/', $lanzou, $sign);
+    preg_match('/var ' . $var[1] . ' = \'(.*?)\';/', $content, $sign);
 
     //如是获取失败,则为多文件
     if (empty($sign)) {
