@@ -96,16 +96,14 @@ function get(){
     }
     mdui.snackbar({
         message: '获取中',
-        position: 'right-bottom',
-      });
-      fetch (channel+"?url="+document.getElementById('lanzou').value+"&pass="+document.getElementById('pwd').value).then(function(response){
-        //打印返回的json数据
-        response.json().then(function(data){
-            document.getElementById("fin").innerHTML = data.data.url
+        position: 'right-bottom'
+    });
+    fetch(`${channel}?url=${document.getElementById('lanzou').value}&pass=${document.getElementById('pwd').value}`)
+        .then((res)=>res.json())
+        .then((res)=>document.getElementById("fin").innerHTML = JSON.stringify(res.data))
+        .catch(function(e){
+            console.log('error: ' + e.toString());
         })
-    }).catch(function(e){
-        console.log('error: ' + e.toString());
-    })
 }
 </script>
 
