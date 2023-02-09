@@ -1,7 +1,7 @@
 <?php
 /**
  * 调用Curl
- * @param $url (地址)
+ * @param string $url (地址)
  * @param int $mode (mode为1时为默认，mode为2时为获取重定向)
  * @return bool|mixed|string
  */
@@ -31,7 +31,7 @@ function curl($url,$mode=1,$post_data=[])
 
 /**
  * 获取页面信息
- * @param $id (传入的ID)
+ * @param string $id (传入的ID)
  * @return array|bool|string
  */
 function getInfo($id)
@@ -129,8 +129,10 @@ function send_post($url, $post_data)
 //信息校验准备
 function info_prepare($content, $pwd)
 {
-    //获取posign值
-    preg_match('/var posign = \'(.*?)\';/', $content, $sign);
+    //获取sign变量对应名称
+    preg_match('/\'sign\':(.*?),/', $content, $var);
+    //获取sign值
+    preg_match('/var ' . $var[1] . ' = \'(.*?)\';/', $content, $sign);
     //如是获取成功就是单文件
     if($sign){
         //单文件
