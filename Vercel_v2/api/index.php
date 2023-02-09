@@ -198,9 +198,9 @@ function send_post($url, $post_data)
 function info_prepare($lanzou, $pwd)
 {
     //获取sign变量对应名称
-    preg_match('/\'sign\':(.*?),/', $content, $var);
+    preg_match('/\'sign\':(.*?),/', $lanzou, $var);
     //获取sign值
-    preg_match('/var ' . $var[1] . ' = \'(.*?)\';/', $content, $sign);
+    preg_match('/var ' . $var[1] . ' = \'(.*?)\';/', $lanzou, $sign);
 
     //如是获取失败,则为多文件
     if (empty($sign)) {
@@ -264,7 +264,7 @@ $url = @$_REQUEST['url'];
 $pass = @$_REQUEST['pass'];
 $type = @$_REQUEST['type'];
 //接口
-const urls = ['https://www.lanzoui.com','https://wwwx.lanzoux.com'];
+const urls = ['https://www.lanzoui.com','https://www.lanzoux.com','https://www.lanzoue.com'];
 
 //开始处理
 if (!empty($url)){
