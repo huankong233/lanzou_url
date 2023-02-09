@@ -1,8 +1,7 @@
 <?php
+//调用Curl扩展
 function curl($url)
 {
-    header('Access-Control-Allow-Origin:*');
-    header('Content-type: application/json;charset=utf-8');
     $header[] = 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
     $header[] = 'Accept-Encoding: gzip, deflate, sdch, br';
     $header[] = 'Accept-Language: zh-CN,zh;q=0.8';
@@ -258,13 +257,15 @@ function info_prepare($lanzou, $pwd)
     }
     return $info;
 }
+header('Access-Control-Allow-Origin:*');
+header('Content-type: application/json;charset=utf-8');
 error_reporting(0);
 //获取所需的参数
 $url = @$_REQUEST['url'];
 $pass = @$_REQUEST['pass'];
 $type = @$_REQUEST['type'];
 //接口
-const urls = ['https://www.lanzoui.com','https://www.lanzoux.com','https://www.lanzoue.com'];
+const urls = ['https://www.lanzoui.com','https://wwwx.lanzoux.com'];
 
 //开始处理
 if (!empty($url)){
