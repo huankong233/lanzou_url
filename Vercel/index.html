@@ -122,7 +122,7 @@
 
         fetch(fullUrl)
           .then(res => res.json())
-          .then(res => (document.getElementById('fin').innerHTML = JSON.stringify(res.data)))
+          .then(res => (document.getElementById('fin').innerHTML = JSON.stringify(res)))
           .catch(e => {
             console.log('error: ' + e.toString())
             document.getElementById('fin').innerHTML = e.toString()
