@@ -20,12 +20,7 @@ function curl($url)
     curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
-//    if ($mode === 1) {
     return curl_exec($ch);
-//    } else if ($mode === 2) {
-//        curl_setopt($ch, CURLOPT_REFERER, '');
-//        return curl_getinfo($ch)['redirect_url'];
-//    }
 }
 
 /**
@@ -77,7 +72,7 @@ function check_status($info, $pass)
         ];
     } else if (isset($pass) && strpos($info, '输入密码')) {
         return [
-            'code' => 203,
+            'code' => 999,
             'msg' => '密码已输入',
         ];
     } else {
@@ -161,12 +156,13 @@ function info_prepare($content, $pwd, $fileId)
 //发送密码校验
 function send_post($url, $post_data, $fileId)
 {
+    preg_match("/\/\/(.*)/",API,$HOST);
     $postdata = http_build_query($post_data);
     $options = [
         'http' => [
             'method' => 'POST',
             'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
-                "Host: " . HOST . "\r\n" .
+                "Host: " . $HOST[1] . "\r\n" .
                 "Origin: " . API . "\r\n" .
                 "Referer: " . API . "/" . $fileId . "\r\n" .
                 "Cookie: Cookie: Hm_lvt_fb7e760e987871d56396999d288238a4=1677224959; Hm_lpvt_fb7e760e987871d56396999d288238a4=1677224959\r\n" .

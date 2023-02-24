@@ -2,10 +2,9 @@
 require_once "./function.php";
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json;charset=utf-8');
-//error_reporting(0);
+error_reporting(0);
 
 const API = 'https://www.lanzoui.com';
-const HOST = 'www.lanzoui.com';
 
 function main()
 {
@@ -44,9 +43,11 @@ function main()
         //单文件
         return [
             'code' => 200,
-            'data' => fileInfo($pageInfo)
+            'data' => [
+              fileInfo($pageInfo)
+            ]
         ];
-    } else if ($status['code'] === 203) {
+    } else if ($status['code'] === 999) {
         //有密码或文件夹
         return info_prepare($pageInfo, $pass, $fileId);
     } else {

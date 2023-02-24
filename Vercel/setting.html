@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API 测试界面</title>
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+    <style>
+      #APIPATHSETDIV {
+        max-width: 960px;
+      }
+      .mdui-textfield-label {
+        text-align: left;
+      }
+
+      .middle {
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body
+    class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-theme-layout-dark mdui-bottom-nav-fixed"
+    id="p-d"
+  >
+    <header class="appbar mdui-appbar mdui-appbar-fixed">
+      <div class="mdui-toolbar mdui-color-theme">
+        <span
+          class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+          mdui-drawer="{target: '#drawer', swipe: true}"
+        >
+          <i class="mdui-icon material-icons">menu</i>
+        </span>
+        <a href="/" class="mdui-typo-headline">Vercel-Lanzou-Get Demo</a>
+        <div class="mdui-toolbar-spacer"></div>
+      </div>
+    </header>
+    <div class="mdui-drawer" id="drawer">
+      <ul class="mdui-list">
+        <a href="/">
+          <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">folder</i>
+            <div class="mdui-list-item-content">主页</div>
+          </li>
+        </a>
+        <a href="/setting.html">
+          <li class="mdui-list-item mdui-ripple">
+            <i class="mdui-list-item-icon mdui-icon material-icons">settings</i>
+            <div class="mdui-list-item-content">设置</div>
+          </li>
+        </a>
+      </ul>
+    </div>
+    <div id="mainset">
+      <div class="mdui-panel-item mdui-panel-item-open" id="APIPATHSETDIV">
+        <div class="mdui-panel-item-header">API 地址设置（不填默认使用本目录下API文件夹）</div>
+        <div class="mdui-panel-item-body">
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label"
+              >API地址（需填写API目录） （可能出现跨域 请自行解决）</label
+            >
+            <input class="mdui-textfield-input" type="text" id="APIPATH" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="mdui-btn mdui-color-theme-accent mdui-ripple middle" onclick="APIPATHSET()">
+      保存更改
+    </button>
+    <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+    <script>
+      document.getElementById('APIPATH').value = localStorage.getItem('apipath')
+      function APIPATHSET() {
+        localStorage.setItem('apipath', document.getElementById('APIPATH').value)
+        mdui.snackbar({
+          message: '已保存',
+          position: 'right-bottom'
+        })
+      }
+    </script>
+  </body>
+</html>
