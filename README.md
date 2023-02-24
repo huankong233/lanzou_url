@@ -1,8 +1,7 @@
 # LanZou_API
 蓝奏云获取直链/蓝奏云直链解析
 支持文件夹解析
-
-注意!!!文件夹内文件数超过50会无法显示，因为需要翻页，翻页我折腾一下午没弄出来，就砍掉了()
+支持翻页
 
 ## 部署方法
 
@@ -30,24 +29,18 @@ A:
 - 使用部署时的url地址
 - url:蓝奏云外链链接
 - pwd:外链密码
+- page:页数（一个文件夹内文件超过50需要翻页）
 
 ### 请求示例
 <p>无密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/ikMixwq817e</a></p>
 <p>有密码 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pass=994i">https://api.huankong.top/lanzou/?url=https://huankong233.lanzouj.com/io7zInot1vi&pass=994i</a></p>
-<p>文件夹 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0e9c4bsj&pass=1omo">https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0e9c4bsj&pass=1omo</a></p>
+<p>文件夹 <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0eay044h&pass=35su">https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0eay044h&pass=35su</a></p>
+<p>文件夹（第二页） <a href="https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0eay044h&pass=35su&page=2">https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0eay044h&pass=35su&page=2</a></p>
 
 ### 返回数据
 ~~~ json
-{
-    "code": 200,
-    "data": {
-        "name": "msyh.ttf ",
-        "author": "15** ",
-        "time": "12 天前 ",
-        "size": " 14.4 M ",
-        "url": "https://dev46.baidupan.com/120322bb/2021/11/21/1adb9e3cd76cd776a428280349147aef.ttf?st=fNgkfh4hZSYhhtepVDYS6w&e=1638542112&b=CDcOfQJ7UD1WLQclACQEZg_c_c&fi=56698784&pid=165-154-75-88&up=2&mp=0"
-    }
-}
+
+{"code":200,"data":{"fileName":"msyh.ttf","fileSize":"14.4 M","fileTime":"2021-11-21","fileAuthor":"15**","fileUrl":"https:\/\/developer.lanzoug.com\/file\/?BmAAPgw9U2ICC1FpCj9dMQM8AjpWZAd2B3kBbwFzVSAIfAc2AHsFN1NsCjAKO1QKUWIHZlc1BTIHNgAwVzIGPwYxAG8MZVMhAjJRdApjXW0DbAI3Vj8HMgc3ATMBaVVyCHgHIABgBWNTNQpuCm9UelE6BzNXJwU1BzEAKVc6BmYGYgA1DGhTYgJnUWQKOl1rA28CZFZtBzIHNwExATxVYAg6B2gAbwVpUzUKbwpqVGxROgc2Vz8FZgdlAGBXJQZzBnIAMQx3U3ICJ1FiCixdNQM9AjpWMAc3BzIBPwFtVWwILgckADQFPFNgCjoKY1RkUT0HNVc\/BTUHMgAwVzkGNgY3AHEMN1NrAiNROgpvXWoDbgIwVjgHMAcyATIBaVVtCC4HJQAtBSZTOAptCmhUZlE8BzZXPgUyBzgAMlc+BiEGcwA+DCFTOgJiUTYKcF1tA24CMFYnBzQHMgEzAXNVbQg4B3YAOQU9UzgKbA=="}}
 ~~~
 
 |code| 返回值|
@@ -55,3 +48,4 @@ A:
 | 200 | 解析成功 |
 | 201 | 链接失效/文件取消分享了/文件不存在或已删除等错误 |
 | 202 | 请输入密码 |
+| 203 | 解析系统出现问题 |
