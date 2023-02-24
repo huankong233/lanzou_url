@@ -2,10 +2,9 @@
 /**
  * 调用Curl
  * @param string $url (地址)
- * @param int $mode (mode为1时为默认，mode为2时为获取重定向)
- * @return bool|mixed|string
+ * @return bool|string
  */
-function curl($url,$mode=1,$post_data=[])
+function curl($url)
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -21,12 +20,12 @@ function curl($url,$mode=1,$post_data=[])
     curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
-    if($mode===1){
-        return curl_exec($ch);
-    }else if($mode===2){
-        curl_setopt($ch, CURLOPT_REFERER, '');
-        return curl_getinfo($ch)['redirect_url'];
-    }
+//    if ($mode === 1) {
+    return curl_exec($ch);
+//    } else if ($mode === 2) {
+//        curl_setopt($ch, CURLOPT_REFERER, '');
+//        return curl_getinfo($ch)['redirect_url'];
+//    }
 }
 
 /**
@@ -37,13 +36,13 @@ function curl($url,$mode=1,$post_data=[])
 function getInfo($id)
 {
     //获取页面数据(单文件)
-    $url = api . '/tp/' . $id;
-    $info = curl($url,1);
-    if (empty($info) || $info === false) {
+    $url = API . '/tp/' . $id;
+    $info = curl($url);
+    if (empty($info)) {
         //获取页面数据(多文件)
-        $url = api . '/' . $id;
-        $info = curl($url,1);
-        if (empty($info) || $info === false) {
+        $url = API . '/' . $id;
+        $info = curl($url);
+        if (empty($info)) {
             return [
                 'code' => 201,
                 'msg' => '文件信息获取失败!'
@@ -90,34 +89,91 @@ function check_status($info, $pass)
 }
 
 //获取文件信息
-function fileInfo($info,$mode=false)
+function fileInfo($info, $mode = 1)
 {
-    preg_match("/<div class=\"md\">(.*?)<span class=\"mtt\">/", $info, $name);
-    preg_match('/时间:<\\/span>(.*?)<span class="mt2">/u', $info, $time);
-    preg_match('/发布者:<\\/span>(.*?)<span class="mt2">/u', $info, $author);
-    preg_match('/<div class="md">(.*?)<span class="mtt">\\((.*?)\\)<\\/span><\\/div>/', $info, $size);
-    preg_match('/var tedomain = \'(.*?)\'/', $info, $tedomain);
-    preg_match('/var domianload = \'(.*?)\'/', $info, $domainload);
+
+    preg_match("/<div class=\"md\">(.*)<span class=\"mtt\">\(\ (.*)\ \)<\/span>/", $info, $fileInfo);
+    $fileName = trim($fileInfo[1]);
+    $fileSize = trim($fileInfo[2]);
+
+    preg_match('/时间:<\/span>(.*)<span class=\"mt2\">发布者:<\/span>(.*)<span class="mt2">/', $info, $fileInfo);
+    $fileTime = trim($fileInfo[1]);
+    $fileAuthor = trim($fileInfo[2]);
+
     $arr = [
-        'name' => $name[1],
-        'time' => $time[1],
-        'author' => $author[1],
-        'size' => $size[2]
+        'fileName' => $fileName,
+        'fileSize' => $fileSize,
+        'fileTime' => $fileTime,
+        'fileAuthor' => $fileAuthor,
+        'fileUrl' => ""
     ];
-    if($mode){
-        $arr['download'] = $tedomain[1].$domainload[1];
+
+    if ($mode === 1) {
+        preg_match('/submit.href = (.*)/', $info, $downloadParams);
+        $downloadParams = trim($downloadParams[1]);
+        foreach (explode('+', $downloadParams) as $downloadParam) {
+            $downloadParam = trim($downloadParam);
+            preg_match('/' . $downloadParam . ' = \'(.*?)\'/', $info, $param);
+            $arr['fileUrl'] .= $param[1];
+        }
     }
+
     return $arr;
 }
 
+//信息校验准备
+function info_prepare($content, $pwd, $fileId)
+{
+    //获取sign变量对应名称
+    preg_match('/\'sign\':(.*?),/', $content, $var);
+    //如是获取成功就是单文件
+    if ($var) {
+        //获取sign值
+        preg_match('/var ' . $var[1] . ' = \'(.*?)\';/', $content, $sign);
+        //单文件
+        return get_data(1, ['action' => 'downprocess', 'sign' => $sign[1], 'p' => $pwd], $content, $fileId);
+    } else {
+        preg_match("/'lx':([\d]*),/", $content, $lx);
+        preg_match("/'fid':([\d]*),/", $content, $fid);
+        preg_match("/'uid':'([\d]*)',/", $content, $uid);
+        preg_match("/pgs =([\d]*)/", $content, $pgs);
+        preg_match("/'rep':'([\d]*)',/", $content, $rep);
+        preg_match("/var [0-9a-z]{6} = '(\d{10})';/", $content, $t);
+        preg_match("/var [_0-9a-z]{6} = '([0-9a-z]{15,})';/", $content, $k);
+        preg_match("/'up':([\d]*),/", $content, $up);
+        preg_match("/'ls':([\d]*),/", $content, $ls);
+        return get_data(2, [
+            'lx' => (int)$lx[1],
+            'fid' => (int)$fid[1],
+            'uid' => $uid[1],
+            'pg' => (int)$pgs[1],
+            'rep' => $rep[1],
+            't' => $t[1],
+            'k' => $k[1],
+            'up' => (int)$up[1],
+            'ls' => (int)$ls[1],
+            'pwd' => $pwd
+        ], $content, $fileId);
+    }
+}
+
+
 //发送密码校验
-function send_post($url, $post_data)
+function send_post($url, $post_data, $fileId)
 {
     $postdata = http_build_query($post_data);
     $options = [
         'http' => [
             'method' => 'POST',
-            'header' =>  "Content-Type: application/x-www-form-urlencoded\r\n"."Origin: ".api."\r\nReferer:".@$_REQUEST['url']."\r\n"."Accept-Language:zh-CN,zh;q=0.9\r\nMozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36\r\n",
+            'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
+                "Host: " . HOST . "\r\n" .
+                "Origin: " . API . "\r\n" .
+                "Referer: " . API . "/" . $fileId . "\r\n" .
+                "Cookie: Cookie: Hm_lvt_fb7e760e987871d56396999d288238a4=1677224959; Hm_lpvt_fb7e760e987871d56396999d288238a4=1677224959\r\n" .
+                "Accept: application/json, text/javascript, */*\r\n" .
+                "Accept-Encoding: gzip, deflate, br\r\n" .
+                "Accept-Language: zh-CN,zh;q=0.9\r\n" .
+                "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36\r\n",
             'content' => $postdata,
             'timeout' => 15 * 60,
         ]
@@ -126,131 +182,74 @@ function send_post($url, $post_data)
     return file_get_contents($url, false, $context);
 }
 
-//信息校验准备
-function info_prepare($content, $pwd)
-{
-    //获取sign变量对应名称
-    preg_match('/\'sign\':(.*?),/', $content, $var);
-    //获取sign值
-    preg_match('/var ' . $var[1] . ' = \'(.*?)\';/', $content, $sign);
-    //如是获取成功就是单文件
-    if($sign){
-        //单文件
-        return get_data(1,['action' => 'downprocess', 'sign' => $sign[1], 'p' => $pwd],$content);
-    }else{
-        //获取两个变量
-        preg_match_all("/var pgs;(([.\n]*).*)(([.\n]*).*)/",$content,$match);
-        $first = $match[1][0];
-        $second = $match[3][0];
-        preg_match("/var (([.\n]*).*) = (([.\n]*).*);/",$first,$first);
-        preg_match("/var (([.\n]*).*) = (([.\n]*).*);/",$second,$second);
-        $firstParams[$first[1]] = $first[3];
-        $firstParams[$second[1]] = $second[3];
-
-        //获取其余参数
-        preg_match_all("/data : { ((([.\n]*).*){10})}/",$content,$match);
-        $data = $match[1][0];
-        $data = str_replace("	","",$data);
-        $data = str_replace("\n","",$data);
-        $data = explode(",",$data);
-
-        //填充参数
-        $params = [];
-        $pgs = 1;
-        foreach ($data as $datum){
-            $arr = explode(":",$datum);
-            switch ($arr[0]){
-                case "'rep'":
-                case "'uid'":
-                    preg_match("/'(([.\n]*).*)'/",$arr[1],$match);
-                    $arr[1] = $match[1];
-                    break;
-                case "'fid'":
-                case "'lx'":
-                case "'up'":
-                case "'ls'":
-                    $arr[1] = (int)$arr[1];
-                    break;
-                case "'pg'":
-                    $arr[1] = $pgs;
-                    break;
-                case "'t'":
-                case "'k'":
-                    foreach ($firstParams as $key => $firstParam){
-                        if($key === $arr[1]){
-                            preg_match("/'(([.\n]*).*)'/",$firstParam,$match);
-                            $arr[1] = $match[1];
-                        }
-                    }
-                    break;
-                case "'pwd'":
-                    $arr[1] = $pwd;
-                    break;
-            }
-            preg_match("/'(([.\n]*).*)'/",$arr[0],$name);
-            $params[$name[1]] = $arr[1];
-        }
-        return get_data(2,$params,$content);
-    }
-}
-
 /**
  * 获取数据
  * @param $type (1为单文件，2为多文件)
  * @param $params
  * @param $content
- * @param $data
+ * @param $fileId
  * @return array
  */
-function get_data($type,$params,$content){
-    if($type === 1){
-        $pwdurl = send_post(api.'/ajaxm.php',$params);
+function get_data($type, $params, $content, $fileId)
+{
+    if ($type === 1) {
+        $pwdurl = send_post(API . '/ajaxm.php', $params, $fileId);
         $obj = json_decode($pwdurl, true);
         if ($obj['zt'] === 1) {
-            $file_info = fileInfo($content);
+            $file_info = fileInfo($content, 2);
             return [
-                'code'=>200,
-                'data'=>[
-                    'name' => $file_info['name'],
-                    'author' => $file_info['author'],
-                    'time' => $file_info['time'],
-                    'size' => $file_info['size'],
-                    'download' => $obj['dom'] . '/file/' . $obj['url']
+                'code' => 200,
+                'data' => [
+                    [
+                        'fileName' => $file_info['fileName'],
+                        'fileSize' => $file_info['fileSize'],
+                        'fileTime' => $file_info['fileTime'],
+                        'fileAuthor' => $file_info['fileAuthor'],
+                        'download' => $obj['dom'] . '/file/' . $obj['url']
+                    ]
                 ]
             ];
         } else {
             return [
-                'code'=>201,
-                'msg'=>'密码错误!'
+                'code' => 201,
+                'msg' => '密码错误!'
             ];
         }
-    }else if($type === 2) {
+    } else if ($type === 2) {
         $page = @$_REQUEST['page'];
-        if ($page) {
+        if ((int)$page !== 1) {
             $pgs = (int)$page;
+            for ($i = 1; $i < $pgs; $i++) {
+                $params['pg'] = $i;
+                send_post(API . '/filemoreajax.php', $params, $fileId);
+                sleep(1);
+            }
             $params['pg'] = $pgs;
         }
-        $pwdurl = send_post(api . '/filemoreajax.php', $params);
-        return parse($pwdurl);
+        return parse(send_post(API . '/filemoreajax.php', $params, $fileId));
     }
 }
 
-function parse($content){
+function parse($content)
+{
     $obj = json_decode($content, true);
     if ($obj['zt'] === 1) {
         $data = [];
         foreach ($obj['text'] as $item) {
-            $url = getInfo($item['id']);
-            $data[] = fileInfo($url,true);
-            sleep(0.6);
+            $data[] = [
+                'fileName' => $item['name_all'],
+                'fileSize' => $item['size'],
+                'fileTime' => $item['time'],
+                'fileId' => $item['id'],
+            ];
         }
         return [
             'code' => 200,
             'data' => $data
         ];
-    }else{
+    } else {
         return [
-            'code' => 201,
+            'code' => 203,
             'zt' => $obj['zt'],
             'msg' => $obj['info']
         ];
