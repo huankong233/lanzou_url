@@ -111,13 +111,13 @@
         }
 
         if (id) {
-          channel += `/?id=${id}`
+          fullUrl += `/?id=${id}`
         } else {
-          channel += `/?url=${url}`
+          fullUrl += `/?url=${url}`
         }
 
         if (pass) {
-          channel += `&pass=${pass}`
+          fullUrl += `&pass=${pass}`
         }
 
         fetch(fullUrl)
