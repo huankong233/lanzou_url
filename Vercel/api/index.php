@@ -213,7 +213,7 @@ function get_data($type, $params, $content, $fileId)
         }
     } else if ($type === 2) {
         $page = @$_REQUEST['page'];
-        if ((int)$page !== 1) {
+        if (isset($page) && (int)$page !== 1) {
             $pgs = (int)$page;
             for ($i = 1; $i < $pgs; $i++) {
                 $params['pg'] = $i;
