@@ -165,7 +165,6 @@ function send_post($url, $post_data, $fileId)
                 "Host: " . $HOST[1] . "\r\n" .
                 "Origin: " . API . "\r\n" .
                 "Referer: " . API . "/" . $fileId . "\r\n" .
-                "Cookie: Cookie: Hm_lvt_fb7e760e987871d56396999d288238a4=1677224959; Hm_lpvt_fb7e760e987871d56396999d288238a4=1677224959\r\n" .
                 "Accept: application/json, text/javascript, */*\r\n" .
                 "Accept-Encoding: gzip, deflate, br\r\n" .
                 "Accept-Language: zh-CN,zh;q=0.9\r\n" .
