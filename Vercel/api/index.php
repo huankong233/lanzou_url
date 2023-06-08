@@ -217,7 +217,7 @@ function get_data($type, $params, $content, $fileId)
             for ($i = 1; $i < $pgs; $i++) {
                 $params['pg'] = $i;
                 send_post(API . '/filemoreajax.php', $params, $fileId);
-                sleep(1);
+                sleep(3);
             }
             $params['pg'] = $pgs;
         }
@@ -238,10 +238,13 @@ function parse($content)
                 'fileId' => $item['id'],
             ];
         }
-        return [
-            'code' => 200,
-            'data' => $data
+        $res = [
+          'code' => 200,
+          'haveNext' => false,
+          'data' => $data
         ];
+        if(count($data)>=50) $res['haveNext'] = true;
+        return $res;
     } else {
         return [
             'code' => 203,
