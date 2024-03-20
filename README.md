@@ -22,7 +22,7 @@ A：ReDeploy即可 不要勾选缓存
 
 - 使用部署时的url地址
 - url:蓝奏云外链链接
-- id:蓝奏云文件ID
+- fileId:蓝奏云文件ID
 - pass:外链密码
 - page:页数（如果一个文件夹内文件超过50需要翻页）
 
@@ -36,7 +36,7 @@ A：ReDeploy即可 不要勾选缓存
 
 [文件夹(第二页): https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0eay044h&pass=35su&page=2](https://api.huankong.top/lanzou/?url=https://huankong233.lanzoue.com/b0eay044h&pass=35su&page=2)
 
-[文件夹中文件的ID: https://api.huankong.top/lanzou/?id=145145](https://api.huankong.top/lanzou/?id=145145)
+[文件夹中文件的ID: https://api.huankong.top/lanzou/?fileId=145145](https://api.huankong.top/lanzou/?fileId=145145)
 
 ### 返回数据
 
